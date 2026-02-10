@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h2>Receipt</h2>
+<p>Thank you! Your order has been placed.</p>
+<table class="cart-table">
+<thead>
+<tr>
+  <th>Item</th>
+  <th>Price</th>
+  <th>Qty</th>
+  <th>Total</th>
+</tr>
+</thead>
+<tbody>
+  {% for it in items %}
+  <tr>
+    <td>{{ it.name }}</td>
+    <td>${{ '{:.2f}'.format(it.price) }}</td>
+    <td>{{ it.quantity }}</td>
+    <td>${{ '{:.2f}'.format(it.total) }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+<div class="totals">
+  <p>Sub Total: ${{ '{:.2f}'.format(subtotal) }}</p>
+  <p class="big">Total Paid: ${{ '{:.2f}'.format(total) }}</p>
+</div>
+<a class="btn" href="{{ url_for('index') }}">Back to menu</a>
+{% endblock %}

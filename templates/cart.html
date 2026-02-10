@@ -1,0 +1,57 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Cart</h2>
+{% if items %}
+<table class="cart-table">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for it in items %}
+    <tr>
+      <td class="cart-item">
+        <!-- <img src="{{ it.image }}" alt="{{ it.name }}"> -->
+         <img src="{{ url_for('static', filename='images/' + it.image) }}" alt="{{ it.name }}">
+        {{ it.name }}
+      </td>
+      <td>${{ '{:.2f}'.format(it.price) }}</td>
+      <td>
+        <form action="{{ url_for('update_cart') }}" method="post" class="inline">
+          <input type="hidden" name="product_id" value="{{ it.id }}">
+          <input type="number" name="quantity" value="{{ it.quantity }}" min="0" required>
+          <button class="small" type="submit">Update</button>
+        </form>
+      </td>
+      <td>${{ '{:.2f}'.format(it.total) }}</td>
+      <td>
+        <form action="{{ url_for('update_cart') }}" method="post" class="inline">
+          <input type="hidden" name="product_id" value="{{ it.id }}">
+          <input type="hidden" name="action" value="remove">
+          <button class="small danger" type="submit">Remove</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="totals">
+  <p>Sub Total: ${{ '{:.2f}'.format(subtotal) }}</p>
+  <p class="big">Total: ${{ '{:.2f}'.format(total) }}</p>
+
+  <form action="{{ url_for('checkout') }}" method="post">
+    <button class="btn primary" type="submit">Checkout</button>
+    <a class="btn" href="{{ url_for('index') }}">Continue Shopping</a>
+  </form>
+</div>
+{% else %}
+<p>Your cart is empty. <a href="{{ url_for('index') }}">Go to menu</a></p>
+{% endif %}
+{% endblock %}

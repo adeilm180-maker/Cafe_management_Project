@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Royal Cafe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>C.L.H Cafe restuarant</h1>
+      <nav>
+        <a href="{{ url_for('index') }}">Menu</a>
+        <a href="{{ url_for('view_cart') }}">
+  Cart ({{ session.get('cart') and session.get('cart')|length or 0 }})
+</a>
+
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+        {% for cat, msg in messages %}
+          <div class="flash {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="container">© Royal Cafe</div>
+  </footer>
+</body>
+</html>
